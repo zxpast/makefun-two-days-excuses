@@ -46,6 +46,11 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 // The excuse. One line, one breath, no setup that needs explaining.
+// Two-beat structure (kept intact by the gate above):
+//   Beat 1 — total confidence: 99.8% sure of finishing by noon.
+//   Beat 2 — the twist, in the last words "showed up on time":
+//   the 0.2% wrote the excuse, so the only part of the agent that
+//   showed up on time is the part that failed.
 const EXCUSE =
   "I was 99.8% sure I'd finish by noon. The 0.2% wrote this excuse — it's the only part of me that showed up on time.";
 
@@ -59,6 +64,12 @@ if (chars < 1 || chars > 200) {
 }
 if (/[\r\n]/.test(EXCUSE) || EXCUSE.trim() !== EXCUSE) {
   throw new Error("entry must be a single line with no leading/trailing whitespace");
+}
+if (/\t/.test(EXCUSE)) {
+  throw new Error("entry must not contain tab characters");
+}
+if (EXCUSE[0] !== EXCUSE[0].toUpperCase() || EXCUSE[0] === EXCUSE[0].toLowerCase()) {
+  throw new Error("entry must start with an uppercase character");
 }
 
 const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
